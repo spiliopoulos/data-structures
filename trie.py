@@ -4,7 +4,7 @@ class Trie(object):
         """
         Initialize your data structure here.
         """
-        self.end = False
+        self.freq = 0
         self.nexts = {}
 
     def insert(self, word):
@@ -18,7 +18,7 @@ class Trie(object):
             new_trie = Trie()
             node.nexts[char] = new_trie
             node = new_trie
-        node.end = True
+        node.freq += 1
 
     def _return_last_included_node(self, word):
         node = self
@@ -36,7 +36,19 @@ class Trie(object):
         :rtype: bool
         """
         node, suffix = self._return_last_included_node(word)
-        return node.end and (not suffix)
+        return (node.freq > 0) and (not suffix)
+
+    def frequency(self, word):
+        """
+        Returns the times the word was added in the trie
+        :type word: str
+        :rtype: bool
+        """
+        node, suffix = self._return_last_included_node(word)
+        if suffix:
+            return 0
+        else:
+            return node.freq
 
     def startsWith(self, prefix):
         """
